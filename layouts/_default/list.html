@@ -1,0 +1,47 @@
+{{/* prettier-ignore-start */}}
+{{- define "title" -}}
+{{ humanize .Section }} — {{ .Site.Title }}
+{{- end -}}
+{{/* prettier-ignore-end */}}
+{{ define "main" }}
+  <!--Title-->
+  <div class="my-8">
+    <div class="mx-4 max-w-2xl md:mx-auto">
+      <h1 class="text-4xl tracking-tight text-gray-900 dark:text-gray-100">{{ .Title }}</h1>
+    </div>
+  </div>
+  <!--/Title-->
+
+  <div class="mx-4 max-w-2xl md:mx-auto">
+    <div class="w-full text-xl leading-normal text-gray-800 dark:text-gray-200">
+      {{- range .Pages.GroupByDate "2006" "desc" }}
+        <div>
+          <div class="mb-1 mt-4 text-2xl">
+            <span class="border-b-2">
+              {{ .Key }} /
+              {{ len .Pages }}
+              {{ if gt (len .Pages) 1 }}
+                {{ humanize $.Section }}
+              {{ else }}
+                {{ singularize $.Section | humanize }}
+              {{ end }}
+            </span>
+          </div>
+          {{- range .Pages.ByDate.Reverse }}
+            <div class="font-light">
+              <span class="mr-2 hidden tabular-nums text-gray-600 dark:text-gray-400 md:inline">
+                {{ dateFormat "2006-01-02" .Date }}
+              </span>
+              <a
+                href="{{ .Permalink }}"
+                title="{{ .Title }}"
+                class="ml-2 border-b-2 transition-all hover:border-blue-400 hover:text-gray-900 dark:border-gray-600 dark:hover:border-blue-500 dark:hover:text-gray-300 md:ml-0"
+                >{{ .Title }}</a
+              >
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
